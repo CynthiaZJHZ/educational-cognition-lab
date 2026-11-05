@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>教育认知实验室｜注意实验作业二</title><link rel="stylesheet" href="css/style.css"></head>
+<body><header class="site-header"><div class="container header-inner"><div class="brand">Educational Cognition Lab · HW2</div><nav class="nav"><a href="index.html">首页</a><a href="flanker.html">Flanker</a><a href="graphical.html">比例判断</a></nav></div></header>
+<main><section class="hero"><div class="container"><span class="badge">经典认知实验 × 教育材料设计</span><h1>教有所引 · 学有所见</h1><p class="hero-lead">两个简短的视觉认知任务，探索人们如何选择信息、估计图表比例。</p><p>本项目包含方向判断和图形比例估计两项任务。请使用电脑键盘，依次完成练习和正式实验。完成后可以查看自己的任务反馈。</p></div></section>
+<section class="container">
+<div class="card" style="margin-top:20px"><h2>开始前设置</h2><div class="form-row"><div class="field"><label for="participant">匿名参与者编号</label><input id="participant" type="text" placeholder="例如 P001" autocomplete="off"><div class="small">不要填写姓名、学号等直接身份信息。</div></div><div class="field"><label for="projectCode">课程 6 位项目码（由项目创建者配置）</label><input id="projectCode" type="text" maxlength="12" placeholder="在 /hw2 创建项目后填写"><div class="small">公开部署前应在 js/config.js 写入项目码；有配置后被试无需填写。下载密钥不要写进代码。</div></div></div>
+<label class="checkbox"><input id="consent" type="checkbox"><span>我已阅读说明，自愿参加本课程实验；数据仅使用匿名编号，可随时退出。</span></label><div class="actions"><button class="btn" id="saveSetup">保存设置</button><button class="btn outline" id="downloadLocal">下载本机全部数据</button></div><div id="setupStatus" class="status"></div></div>
+<div class="grid" style="margin-top:20px"><div class="card"><span class="badge">W6 · 教学中的注意引导 · 箭头版</span><h2>实验 1：Flanker 侧翼干扰</h2><p><strong>任务：</strong>判断五个箭头中间箭头的方向。</p><p><strong>呈现：</strong>部分题目会使用不同的颜色，但按键规则始终一致。</p><p class="education-hint"><strong>教育学联系：</strong>这种任务可用于理解课堂材料中的注意分配；不直接测量学习成绩。</p><p><strong>正式试次：</strong>48 次（2×2 被试内设计，每格 12 次）。</p><a class="btn" href="flanker.html">进入实验</a></div><div class="card"><span class="badge">W7 · 统计图表阅读</span><h2>实验 2：图形比例判断</h2><p><strong>任务：</strong>根据圆形图中蓝色扇区估计百分比。</p><p><strong>呈现：</strong>图形可能带有一些辅助标记；每道题均独立估计。</p><p class="education-hint"><strong>教育学联系：</strong>类似任务可用于研究课堂统计图表的可读性。</p><p><strong>正式试次：</strong>24 次（无刻度 12 + 有刻度 12）。</p><a class="btn" href="graphical.html">进入实验</a></div></div>
+<div class="card" style="margin-top:20px"><h2>建议顺序</h2><div class="grid three"><div><strong>1. 先做 Flanker</strong><p class="small">练习 → 正式实验 → 自动本机备份/尝试上传。</p></div><div><strong>2. 再做比例判断</strong><p class="small">保持相同匿名编号，完成第二项实验。</p></div><div><strong>3. 导入结果</strong><p class="small">结果由研究者统一分析；你也可以在结束页下载自己的记录。</p></div></div></div></section></main>
+<footer class="footer"><div class="container">仅用于课程实验作业。请勿上传姓名、学号或下载密钥。</div></footer>
+<script src="js/config.js"></script><script src="js/common.js"></script><script>
+const p=Attn.qs('#participant'), c=Attn.qs('#projectCode'), consent=Attn.qs('#consent'), status=Attn.qs('#setupStatus');p.value=Attn.getParticipant();c.value=Attn.getProjectCode();
+const codeEmbedded=/^[A-Za-z0-9]{6}$/.test(String(window.ATTN_CONFIG?.PROJECT_CODE||'').trim());
+if(codeEmbedded){c.readOnly=true;c.closest('.field').style.display='none';}
+// 每次从首页招募新被试都必须重新明确勾选同意，避免共用电脑沿用上人的同意。
+consent.checked=false;Attn.setConsent(false);
+Attn.qs('#saveSetup').onclick=()=>{if(!p.value.trim()){status.className='status err';status.textContent='请填写匿名参与者编号。';return}Attn.setParticipant(p.value);Attn.setProjectCode(c.value);Attn.setConsent(consent.checked);status.className='status ok';status.textContent='设置已保存。'};
+Attn.qs('#downloadLocal').onclick=()=>{const rows=Attn.loadTrials();if(!rows.length){status.className='status err';status.textContent='当前浏览器还没有实验数据。';return}Attn.downloadRows(rows,'attention_lab_local_backup');status.className='status ok';status.textContent=`已导出 ${rows.length} 条 trial。`};
+</script></body></html>
